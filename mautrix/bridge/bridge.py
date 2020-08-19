@@ -109,7 +109,7 @@ class Bridge(Program):
                              })
 
     def prepare_db(self) -> None:
-        self.db = sql.create_engine(self.config["appservice.database"])
+        self.db = sql.create_engine(self.config["appservice.database"], pool_size=2000, max_overflow=100)
         Base.metadata.bind = self.db
         if not self.db.has_table("alembic_version"):
             self.log.critical("alembic_version table not found. "
